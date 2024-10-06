@@ -5,7 +5,7 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Authentication, { PageType } from './pages/Authentication.jsx'
 import { CookiesProvider } from 'react-cookie'
-import AddChallenge from './pages/Challenge.jsx'
+import AddChallenge from './pages/AddChallenge.jsx'
 
 const router = createBrowserRouter([
   {
