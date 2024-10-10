@@ -5,7 +5,7 @@ import zalo from '../assets/zalo.svg'
 const Footer = () =>{
     return (
         <div className="bg-white">
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-2 py-8 sm:px-6 lg:px-8">
             <div className="flex flex-col justify-between items-center gap-2">
                 <div className='flex gap-3'>
                     <a href=""><img className='w-6 h-6' src={facebook} /> </a>

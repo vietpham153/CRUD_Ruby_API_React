@@ -1,10 +1,13 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Button from "../elements/Button"
 import { PageType } from "./Authentication"
 import Datepicker from "react-tailwindcss-datepicker";
 import ReactQuill from 'react-quill';
 import QuillToolbar, { modules, formats }  from "../components/EditerToolBar";
 import "react-quill/dist/quill.snow.css";
+import { addChallenge } from "../apis/challenges";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const initialErrorState = {
     title: '',
@@ -14,6 +17,27 @@ const initialErrorState = {
 }
 
 const AddChallenge = () =>{
+    const handleResponse = async ([response, error]) => {
+        if(error){
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                api: error // Chỉ cập nhật trường 'api' trong errors
+            }))
+        }else{
+            console.log("response", response);
+            // show toast
+            navigate("/");
+            
+        }
+    }
+    const [cookies, setCookie] = useCookies([]);
+    const navigate = useNavigate()
+    useEffect (()=>{
+        if(!cookies.jwt){
+            // show toast
+            navigate('/');
+        }
+    })
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('');
     const handleTitleChange = (e) =>{
@@ -48,7 +72,18 @@ const AddChallenge = () =>{
         }
         setErrors(newErrors)
 
-
+        addChallengeApi()
+    }
+    const addChallengeApi = async () => {
+        const [response, error] = await addChallenge(cookies.jwt, {
+            challenge:{
+                title: title,
+                description: description,
+                start_date: value.startDate,
+                end_date: value.endDate
+            }
+        })
+        handleResponse([response, error])
     }
     const [value, setValue] = useState({ 
         startDate: null, 

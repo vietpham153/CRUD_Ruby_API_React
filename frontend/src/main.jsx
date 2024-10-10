@@ -9,10 +9,6 @@ import AddChallenge from './pages/AddChallenge.jsx'
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element:  <App />
-  },
-  {
     path: '/login',
     element:  <Authentication pageType={PageType.LOGIN} />
   },
@@ -23,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: '/add-challenge',
     element:  <AddChallenge />
+  },
+  {
+    path: '/*',
+    element:  <App />
   }
 ])
 

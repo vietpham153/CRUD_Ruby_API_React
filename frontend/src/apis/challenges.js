@@ -1,22 +1,49 @@
-import { DOMAIN } from "./config";
-export const registerApi = async (bodyObject) =>{
+import { BASE_API } from "./config";
+export const addChallenge = async (jwtToken, bodyObject) =>{
     // POST request options
   const requestOptions = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': jwtToken
     },
     body: JSON.stringify(bodyObject)
   };
   
     try {
-        const response =await fetch(`${DOMAIN}/users`, requestOptions);
+        const response =await fetch(`${BASE_API}/challenges`, requestOptions);
         if (response.ok) {
             return [response, '']
         }
-        if(response.status === 422) {
-          return ['', 'User already registered']
+        if(response.status === 401) {
+          return ['', 'Unauthorized user. Cannot add challenge' ]
         }
+        
+        const errorMessage = await response.text();
+        return ['',`Server side error: ${errorMessage}`]
+      } catch (error) {
+        return ['',`Server down:${error}`]
+      }
+}
+export const getActiveAndUpcomingChallenges = async (jwtToken, bodyObject) =>{
+    // POST request options
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': jwtToken
+    }
+  };
+  
+    try {
+        const response =await fetch(`${BASE_API}/challenges/active_and_upcoming`, requestOptions);
+        if (response.ok) {
+            return [response, '']
+        }
+        if(response.status === 401) {
+          return ['', 'Unauthorized user. Cannot add challenge' ]
+        }
+        
         const errorMessage = await response.text();
         return ['',`Server side error: ${errorMessage}`]
       } catch (error) {
@@ -24,46 +51,25 @@ export const registerApi = async (bodyObject) =>{
       }
 }
 
-export const loginApi = async (bodyObject) =>{
-    // POST request options
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(bodyObject)
-  };
-  
-    try {
-        const response =await fetch(`${DOMAIN}/users/sign_in`, requestOptions);
-        if (response.ok) {
-            return [response, '']
-        }
-        const errorMessage = await response.text();
-        return ['',`Server side error: ${errorMessage}`]
-      } catch (error) {
-        return ['',`Server down:${error}`]
-      }
-}
-
-export const logoutApi = async (jwtToken) =>{
+export const getChallengeById = async (jwtToken, id) =>{
   // POST request options
 const requestOptions = {
-  method: 'DELETE',
+  method: 'GET',
   headers: {
     'Content-Type': 'application/json',
     'Authorization': jwtToken
-  },
+  }
 };
 
   try {
-      const response =await fetch(`${DOMAIN}/users/sign_out`, requestOptions);
+      const response =await fetch(`${BASE_API}/challenges/${id}`, requestOptions);
       if (response.ok) {
           return [response, '']
       }
       if(response.status === 401) {
-        return ['', 'Invalid email or password']
+        return ['', 'Unauthorized user. Cannot add challenge' ]
       }
+      
       const errorMessage = await response.text();
       return ['',`Server side error: ${errorMessage}`]
     } catch (error) {
