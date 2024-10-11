@@ -4,6 +4,8 @@ import Features from "./container/Features"
 import ChallengeList from "./container/ChallengeList"
 import { Route, Routes } from "react-router-dom"
 import Challenge from "./pages/Challenge"
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 function App() {
   return (
     <>

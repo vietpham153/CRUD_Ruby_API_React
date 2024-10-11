@@ -90,11 +90,23 @@ const AddChallenge = () =>{
         endDate: null
     });
     
+
+    const handleBack = () => {
+        navigate(-1); // Điều hướng quay lại trang trước
+    };
+
     const today = new Date();
     const [errors, setErrors] = useState(initialErrorState)
     return (
         
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-12">
+            <div className="flex justify-between items-center">
+            <Button type="button" onClick={handleBack} 
+            className="bg-indigo-500 text-white hover:bg-indigo-600 px-3 py-2 rounded"
+            >
+                        Back
+            </Button>
+            </div>
             <h1 className="text-4xl">
             Add a new challenge
             </h1>
